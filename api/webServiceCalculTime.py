@@ -47,22 +47,25 @@ class TrajetService(ServiceBase):
         return temps_trajet_total
 
 
-application = Application([TrajetService], 'mon_app_serveur.soap',
-                          in_protocol=Soap11(validator='lxml'),
-                          out_protocol=Soap11())
-
-wsgi_application = WsgiApplication(application)
 
 
 def dist(lat1, lon1, lat2, lon2):
     return distance.distance((lat1, lon1), (lat2, lon2)).km
 
+application = Application([TrajetService], 'mon_app_serveur.soap',
+                          in_protocol=Soap11(validator='lxml'),
+                          out_protocol=Soap11())
 
-# 5. Il reste à instancier un serveur web (dans un main):
-if __name__ == '__main__':
-    # 6. Instanciation et lancement du serveur:
-    server = make_server('127.0.0.1', 8000, wsgi_application)
-    server.serve_forever()
-    # print lancer
-    print("Lancement du serveur sur le port 8000")
-    # print(dist(48.866667, 2.333333, 43.2961743, 5.3699525))
+wsgi_application = WsgiApplication(application)
+app = wsgi_application
+
+
+
+# # 5. Il reste à instancier un serveur web (dans un main):
+# if __name__ == '__main__':
+#     # 6. Instanciation et lancement du serveur:
+#     server = make_server('127.0.0.1', 8000, wsgi_application)
+#     server.serve_forever()
+#     # print lancer
+#     print("Lancement du serveur sur le port 8000")
+#     # print(dist(48.866667, 2.333333, 43.2961743, 5.3699525))
